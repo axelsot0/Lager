@@ -10,8 +10,12 @@ namespace Entidades
     {
         public int IdCompra { get; set; }
 
-        public int IdProducto { get; set; } 
+        public int IdProducto { get; set; }
+
+        public int Cantidad { get; set; }
 
         public int IdCarrito { get; set;}
+
+
     }
 }
