@@ -15,9 +15,9 @@ namespace Entidades
         public string Modelo { get; set;}
         public int Existencias { get; set; }
         public string Descripcion { get; set; }
-        public  string Foto { get; set; }
+        public string Foto { get; set; }
         public float Precio { get; set; }
-        
+
 
 
     }
