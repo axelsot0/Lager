@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entidades
 {
     public class Producto
     {
-        public int Id { get; set; }
+        public int IdProducto { get; set; }
         public string NombreProducto { get; set; }
         public string Marca { get; set; }
         public string Tipo { get; set; }
@@ -18,6 +19,8 @@ namespace Entidades
         public string Foto { get; set; }
         public float Precio { get; set; }
 
+        [JsonIgnore]
+        public ICollection<Compra> compras { get; set; }
 
 
     }
