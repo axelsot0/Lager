@@ -10,8 +10,6 @@ namespace Entidades
     {
         public int Id { get; set; }
 
-        public string Comentario { get; set; }
-
         public int IdProducto { get; set; }
 
         public Producto Producto { get; set; }
@@ -19,5 +17,9 @@ namespace Entidades
         public int IdUsuario { get; set; }
 
         public Usuario Usuario { get; set; }
+
+        public string Comentario { get; set; }
+
+        public DateTime Fecha { get; set; }
     }
 }
