@@ -16,7 +16,7 @@ namespace Entidades
 
         public int IdUsuario { get; set; }
 
-        public Usuario Usuario { get; set; }
+        public ApplicationUser Usuario { get; set; }
 
         public string Comentario { get; set; }
 
