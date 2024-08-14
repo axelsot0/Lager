@@ -12,10 +12,16 @@ namespace Entidades
 
         public int IdProducto { get; set; }
 
+        public ICollection<Producto> Productos { get; set; }
+
         public int Cantidad { get; set; }
 
-        public int IdCarrito { get; set;}
+        public int IdUsuario { get; set;}
 
+        public Usuario usuario { get; set; }
 
+        public DateTime Fecha { get; set; }
+
+        
     }
 }

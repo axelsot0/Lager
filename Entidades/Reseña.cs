@@ -8,7 +8,7 @@ namespace Entidades
 {
     public class Reseña
     {
-        public int Id { get; set; }
+        public int IdReseña { get; set; }
 
         public int IdProducto { get; set; }
 
