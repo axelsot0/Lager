@@ -12,7 +12,6 @@ namespace Entidades
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
 
-
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         {
         
