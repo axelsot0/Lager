@@ -8,7 +8,6 @@ namespace Entidades
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Carrito> Carritos { get; set; }
         public DbSet<Compra> Compras { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
@@ -20,10 +19,7 @@ namespace Entidades
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Carrito>()
-                .Property(ca => ca.IdCarrito)
-                .ValueGeneratedOnAdd();
+            
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Compra>()
@@ -39,6 +35,25 @@ namespace Entidades
             modelBuilder.Entity<Reseña>()
                 .Property(r => r.IdReseña)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Compra>()
+                .HasKey(c => c.IdCompra);
+
+            
+
+            modelBuilder.Entity<Producto>()
+                .HasKey(p => p.IdProducto);
+
+            modelBuilder.Entity<Reseña>()
+                .HasKey(r => r.IdReseña);
+
+
+            modelBuilder.Entity<Producto>()
+                .HasOne(c => c.Compra)
+                .WithMany(p => p.Productos)
+                .HasForeignKey(c => c.IdCompra)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_Producto_Compra");
 
 
         }

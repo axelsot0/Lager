@@ -19,8 +19,10 @@ namespace Entidades
         public string Foto { get; set; }
         public float Precio { get; set; }
 
+        public int IdCompra {  get; set; }
+
         [JsonIgnore]
-        public ICollection<Compra> compras { get; set; }
+        public Compra Compra { get; set; }
 
 
     }
