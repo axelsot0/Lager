@@ -12,17 +12,16 @@ namespace Entidades
 
         public int IdProducto { get; set; }
 
-        public Producto producto { get; set; }
+        public ICollection<Producto> Productos { get; set; }
 
         public int Cantidad { get; set; }
 
-        public int IdCarrito { get; set;}
+        public int IdUsuario { get; set;}
 
-        public Carrito carrito { get; set; }
+        public Usuario usuario { get; set; }
 
-        public Compra()
-        {
-            Console.WriteLine();
-        }
+        public DateTime Fecha { get; set; }
+
+        
     }
 }
