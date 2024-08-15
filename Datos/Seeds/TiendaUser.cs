@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Datos.Seeds
 {
-    public class Tienda
+    public class TiendaUser
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {

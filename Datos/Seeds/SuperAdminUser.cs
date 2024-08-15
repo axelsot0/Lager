@@ -4,7 +4,7 @@ using Servicio.Enums;
 
 namespace Datos.Seeds
 {
-    public class SuperAdmin
+    public class SuperAdminUser
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {

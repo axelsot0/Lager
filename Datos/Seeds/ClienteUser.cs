@@ -1,15 +1,10 @@
 ﻿using Entidades;
 using Microsoft.AspNetCore.Identity;
 using Servicio.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Datos.Seeds
 {
-    public class Cliente
+    public class ClienteUser
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
