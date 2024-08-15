@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entidades
+namespace Servicio.Enums
 {
-    public class Usuario
+    public enum RolesEnum
     {
-        
+        Tienda,
+        Cliente,
+        SuperAdmin
     }
 }
