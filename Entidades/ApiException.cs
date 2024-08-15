@@ -16,6 +16,6 @@ namespace Entidades
         }
 
         public ApiException(string message, params object[] args)
-                : base(String.Format(CultureInfo.CurrentCulture, message, args)) { }
+                    : base(String.Format(CultureInfo.CurrentCulture, message, args)) { }
     }
 }
