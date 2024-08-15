@@ -19,3 +19,6 @@ namespace Entidades
                     : base(String.Format(CultureInfo.CurrentCulture, message, args)) { }
     }
 }
+
+
+//Esto es apra 
