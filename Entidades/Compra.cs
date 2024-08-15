@@ -18,6 +18,8 @@ namespace Entidades
 
         public int IdUsuario { get; set;}
 
+        public Usuario usuario { get; set; }
+
         public ApplicationUser usuario { get; set; }
 
         public DateTime Fecha { get; set; }
