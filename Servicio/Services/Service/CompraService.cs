@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Entidades;
+using Servicio.Interface;
 
 
 
 namespace Servicio.Services.Service
 {
-    public class CompraService
+    public class CompraService : ICompraService
     {
         private readonly AppDbContext _context;
 
@@ -38,7 +39,7 @@ namespace Servicio.Services.Service
         }
         public async Task<bool> DeleteCompra(int id)
         {
-            var compra =  await _context.Compras.FindAsync(id);
+            var compra = await _context.Compras.FindAsync(id);
 
             if (compra == null)
             {
@@ -49,7 +50,7 @@ namespace Servicio.Services.Service
             _context.Compras.Remove(compra);
             await _context.SaveChangesAsync();
 
-            
+
             return true;
         }
 

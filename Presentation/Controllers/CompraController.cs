@@ -7,5 +7,6 @@ namespace Presentation.Controllers
     [ApiController]
     public class CompraController : ControllerBase
     {
+
     }
 }

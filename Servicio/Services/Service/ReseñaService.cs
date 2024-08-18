@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Servicio.Interface;
 
 namespace Servicio.Services.Service
 {
-    public class ReseñaService
+    public class ReseñaService : IReseñaService
     {
         private readonly AppDbContext _context;
 
@@ -23,7 +24,7 @@ namespace Servicio.Services.Service
 
         public async Task<IEnumerable<Reseña>> GetReseñasByProducts(int idProducto)
         {
-            
+
             var query = _context.Reseñas.Where(r => r.IdProducto == idProducto);
 
             return await query.ToListAsync();
@@ -34,7 +35,7 @@ namespace Servicio.Services.Service
         {
             var reseña = await _context.Reseñas.FindAsync(idReseña);
 
-            if(reseña == null)
+            if (reseña == null)
             {
                 _logger.LogWarning($"Reseña con id {idReseña} no encontrado.");
                 return false;
@@ -48,7 +49,7 @@ namespace Servicio.Services.Service
         public async Task<Reseña> CreateReseña(Reseña newReseña)
         {
             _logger.LogInformation($"Registrando reseña {newReseña.Comentario}");
-            if(newReseña.Comentario ==null || newReseña.IdUsuario == null)
+            if (newReseña.Comentario == null || newReseña.IdUsuario == null)
             {
                 _logger.LogInformation($"La reseña que se ha intentado registrar no cumple con los datos necesarios");
                 return null;
@@ -58,6 +59,6 @@ namespace Servicio.Services.Service
             _logger.LogInformation($"Producto creado exitosamente con id {newReseña.IdReseña} pertenece al producto con id {newReseña}");
             return newReseña;
         }
-        
+
     }
 }
