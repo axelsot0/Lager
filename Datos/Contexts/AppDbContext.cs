@@ -12,6 +12,7 @@ namespace Datos
         public DbSet<Compra> Compras { get; set; }
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
+        public DbSet<Foto> Fotos { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         {
