@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entidades;
+using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Servicio.Services.Service
 {
@@ -31,7 +33,7 @@ namespace Servicio.Services.Service
             {
                 return null; 
             }
-            return query.ToListAsync();
+            return await query.ToListAsync();
         }   
 
         public async Task<Foto> AddFoto(Foto foto)
@@ -52,15 +54,15 @@ namespace Servicio.Services.Service
             return ft;
         }
 
-        public async Task<bool> DeleteFoto(Foto foto)
+        public async Task<bool> DeleteFoto(int id)
         {
-            _logger.LogInformation($"Vamos a borrar la foto con id{foto.IdFoto}");
+            _logger.LogInformation($"Vamos a borrar la foto con id{id}");
 
-            var foto = await _context.Fotos.FindAsync(foto.IdFoto);
+            var foto = await _context.Fotos.FindAsync(id);
 
             if(foto == null)
             {
-                _logger.LogWarning($"Foto con id {foto.idFoto} no encontrado.");
+                _logger.LogWarning($"Foto con id {id} no encontrado.");
                 return false;
             }
 

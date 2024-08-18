@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Entidades;
+
+
 
 namespace Servicio.Services.Service
 {
@@ -15,7 +19,7 @@ namespace Servicio.Services.Service
 
         public async Task<IEnumerable<Compra>> GetAllCompras()
         {
-            return await _context.Compras
+            return await _context.Compras.ToListAsync();
         }
 
         public async Task<IEnumerable<Compra>> GetComprasByUser(int idUser)
@@ -30,11 +34,11 @@ namespace Servicio.Services.Service
         {
             _context.Compras.Add(newCompra);
             await _context.SaveChangesAsync();
-            return newProduct;
+            return newCompra;
         }
         public async Task<bool> DeleteCompra(int id)
         {
-            var compra = _context.Compras.FindAsync(id);
+            var compra =  await _context.Compras.FindAsync(id);
 
             if (compra == null)
             {
