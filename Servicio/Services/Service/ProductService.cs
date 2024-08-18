@@ -26,10 +26,10 @@ namespace Servicio.Services.Service
         {
             _logger.LogInformation("Mostrando los productos con filtros (algunos pueden ser null)");
 
-            // Inicia la consulta a partir del conjunto de productos
+            
             var query = _context.Productos.AsQueryable();
 
-            // Aplica los filtros opcionales solo si tienen valor
+            
             if (!string.IsNullOrEmpty(objFiltro.NombreProducto))
             {
                 query = query.Where(p => p.NombreProducto.Contains(objFiltro.NombreProducto));
@@ -60,14 +60,64 @@ namespace Servicio.Services.Service
             return await query.ToListAsync();
         }
 
+        public async Task<Producto> CreateProduct(Producto newProduct)
+        {
+            _logger.LogInformation($"Vamos a crear un nuevo producto: {newProduct.NombreProducto}");
+
+            _context.Productos.Add(newProduct);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Producto creado exitosamente con id {newProduct.IdProducto}");
+            return newProduct;
+        }
+        public async Task<bool> EditProduct(int id, Producto updatedProduct)
+        {
+            _logger.LogInformation($"Vamos a editar el producto con id {id}");
+
+            var product = await _context.Productos.FindAsync(id);
+            if (product == null)
+            {
+                _logger.LogWarning($"Producto con id {id} no encontrado.");
+                return false;
+            }
+
+            product.NombreProducto = updatedProduct.NombreProducto;
+            product.Descripcion = updatedProduct.Descripcion;
+            product.Precio = updatedProduct.Precio;
+            product.Existencias = updatedProduct.Existencias;
+            product.Tipo = updatedProduct.Tipo;
+            product.Modelo = updatedProduct.Modelo;
+            product.Foto = updatedProduct.Foto;
+            product.Precio = updatedProduct.Precio;
+
+            _context.Productos.Update(product);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Producto con id {id} editado exitosamente.");
+            return true;
+        }
+
+
+
+        public async Task<bool> DeleteProduct(int id)
+        {
+            _logger.LogInformation($"Vamos a borrar el producto con id{id}");
+
+            var product = await _context.Productos.FindAsync(id);
+
+            if (product == null)
+            {
+                _logger.LogWarning($"Producto con id {id} no encontrado.");
+                return false;
+            }
+
+            _context.Productos.Remove(product);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation($"Producto con id {id} borrado exitosamente.");
+            return true;
+        }
+
 
     }
-    public class Filtro
-    {
-        public string? NombreProducto { get; set; } 
-        public string? Marca { get; set; }
-        public string? Modelo { get; set; }
-        public float? PrecioMin { get; set; }
-        public float? PrecioMax { get; set; }
-    }
+    
 }
