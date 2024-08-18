@@ -17,6 +17,8 @@ namespace Servicio.Services.Service
         private readonly AppDbContext _context;
 
         private readonly ILogger<ProductService> _logger;
+        
+        public async Task<List<Producto>> GetAllProducts()
 
         public async Task<IEnumerable<Producto>> GetAllProducts()
         {
