@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Entidades;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Servicio.Interface;
 
 namespace Servicio.Services.Service
 {
-    public class FotoService
+    public class FotoService : IFotoService
     {
         private readonly AppDbContext _context;
 
@@ -31,10 +32,10 @@ namespace Servicio.Services.Service
             query = query.Where(f => f.IdProducto.Contains(idProducto));
             if (query == null)
             {
-                return null; 
+                return null;
             }
             return await query.ToListAsync();
-        }   
+        }
 
         public async Task<Foto> AddFoto(Foto foto)
         {
@@ -60,7 +61,7 @@ namespace Servicio.Services.Service
 
             var foto = await _context.Fotos.FindAsync(id);
 
-            if(foto == null)
+            if (foto == null)
             {
                 _logger.LogWarning($"Foto con id {id} no encontrado.");
                 return false;
