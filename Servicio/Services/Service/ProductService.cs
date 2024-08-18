@@ -8,15 +8,16 @@ using Datos.Contexts;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Servicio.Interface;
 
 namespace Servicio.Services.Service
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
         private readonly AppDbContext _context;
 
         private readonly ILogger<ProductService> _logger;
-        
+
         public async Task<IEnumerable<Producto>> GetAllProducts()
         {
             return await _context.Productos.ToListAsync();
@@ -26,10 +27,10 @@ namespace Servicio.Services.Service
         {
             _logger.LogInformation("Mostrando los productos con filtros (algunos pueden ser null)");
 
-            
+
             var query = _context.Productos.AsQueryable();
 
-            
+
             if (!string.IsNullOrEmpty(objFiltro.NombreProducto))
             {
                 query = query.Where(p => p.NombreProducto.Contains(objFiltro.NombreProducto));
@@ -56,7 +57,7 @@ namespace Servicio.Services.Service
                 query = query.Where(p => p.Precio <= objFiltro.PrecioMax.Value);
             }
 
-            
+
             return await query.ToListAsync();
         }
 
@@ -119,5 +120,5 @@ namespace Servicio.Services.Service
 
 
     }
-    
+
 }
