@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Servicio.Interface;
 
 namespace Presentation.Controllers
 {
@@ -8,6 +9,7 @@ namespace Presentation.Controllers
     public class ProductosController : ControllerBase
     {
 
-        private readonly I
+        private readonly IProductService _productService;
+        private readonly ILogger<ProductosController> _logger;
     }
 }
