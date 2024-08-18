@@ -1,8 +1,6 @@
 ﻿using Entidades.Dtos.Account;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Servicio.Enums;
 using Servicio.Interface;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
@@ -32,17 +30,16 @@ namespace Presentation.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("admin-user-register")]
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpPost("user-register")]
         [SwaggerOperation(
-            Summary = "Admin User Creation",
-            Description = "Receives the needed parameters to create a admin role user")]
+            Summary = "User Creation",
+            Description = "Receives the needed parameters to create a user")]
         [Consumes(MediaTypeNames.Application.Json)]
-        public async Task<IActionResult> AdminRegisterAsync([FromBody] RegisterRequest request)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
         {
-            string role = RolesEnum.SuperAdmin.ToString();
             var origin = Request.Headers["origin"];
-            return Ok(await _accountService.RegisterUserAsync(request, origin, role));
+            return Ok(await _accountService.RegisterUserAsync(request, origin, request.Role));
         }
 
 
@@ -77,6 +74,28 @@ namespace Presentation.Controllers
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest request)
         {
             return Ok(await _accountService.ResetPasswordAsync(request));
+        }
+
+
+        [HttpPost("Change-Status")]
+        [SwaggerOperation(
+            Summary = "Changing the status of user",
+            Description = "Allow that the users join or not to their account ")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> ChangeStatusAsync([FromBody] ChangeStatusUser request)
+        {
+            return Ok(await _accountService.ChangeUserStatus(request));
+        }
+
+
+        [HttpPost("Get-All-Tiendas")]
+        [SwaggerOperation(
+            Summary = "Get All the users with the role SuperMarket ",
+            Description = "Allow get all the supermarkets ")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        public async Task<IActionResult> Async()
+        {
+            return Ok(await _accountService.GetAllTiendas());
         }
     }  
 }

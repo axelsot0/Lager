@@ -1,13 +1,8 @@
-﻿using Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Servicio.Interface;
+using Entidades.Entity;
+using Datos;
 
 namespace Servicio.Services.Service
 {
@@ -56,7 +51,7 @@ namespace Servicio.Services.Service
             }
             _context.Reseñas.Add(newReseña);
             await _context.SaveChangesAsync();
-            _logger.LogInformation($"Producto creado exitosamente con id {newReseña.IdReseña} pertenece al producto con id {newReseña}");
+            _logger.LogInformation($"Producto creado exitosamente con id {newReseña.IdReseña} pertenece al Producto con id {newReseña}");
             return newReseña;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using Entidades.Entity;
 
 namespace Servicio.Interface
 {
@@ -8,6 +9,6 @@ namespace Servicio.Interface
         Task<bool> DeleteProduct(int id);
         Task<bool> EditProduct(int id, Producto updatedProduct);
         Task<IEnumerable<Producto>> GetAllProducts();
-        Task<IEnumerable<Producto>> GetFilteredProducts(Filtro objFiltro);
+        Task<IEnumerable<Producto>> GetFilteredProducts(FiltroProducts objFiltro);
     }
 }

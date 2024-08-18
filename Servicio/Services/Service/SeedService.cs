@@ -1,6 +1,7 @@
 ﻿using Datos.Seeds;
 using Entidades;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Servicio.Interface;
 
 namespace Servicio.Services.Service
@@ -16,12 +17,15 @@ namespace Servicio.Services.Service
             _roleManager = roleManager;
         }
 
-        public async Task SeedAsync()
+        public async Task SeedAsync(IServiceProvider services)
         {
-            await DefaultRoles.SeedAsync(_userManager, _roleManager);
-            await SuperAdminUser.SeedAsync(_userManager, _roleManager);
-            await TiendaUser.SeedAsync(_userManager, _roleManager);
-            await ClienteUser.SeedAsync(_userManager, _roleManager);
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            await DefaultRoles.SeedAsync(userManager, roleManager);
+            await SuperAdminUser.SeedAsync(userManager, roleManager);
+            await TiendaUser.SeedAsync(userManager, roleManager);
+            await ClienteUser.SeedAsync(userManager, roleManager);
         }
     }
 }

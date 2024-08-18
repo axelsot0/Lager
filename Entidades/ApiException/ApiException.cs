@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Entidades
+namespace Entidades.ApiException
 {
     public class ApiException : Exception
     {
@@ -16,9 +16,6 @@ namespace Entidades
         }
 
         public ApiException(string message, params object[] args)
-                    : base(String.Format(CultureInfo.CurrentCulture, message, args)) { }
+        : base(string.Format(CultureInfo.CurrentCulture, message, args)) { }
     }
 }
-
-
-//Esto es apra 

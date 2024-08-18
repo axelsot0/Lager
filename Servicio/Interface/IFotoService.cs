@@ -1,4 +1,4 @@
-﻿using Entidades;
+﻿using Entidades.Entity;
 
 namespace Servicio.Interface
 {

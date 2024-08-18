@@ -2,6 +2,7 @@
 using Entidades;
 using Entidades.Dtos.Account;
 using Entidades.Email;
+using Entidades.Filtro;
 using Entidades.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -290,7 +291,7 @@ namespace Servicio.Services.Account
 
         //USERS GETALL
 
-        public async Task<List<DtoAccounts>> GetAllUsers()
+        public async Task<List<DtoAccounts>> GetAllTiendas()
         {
             var userList = await _userManager.Users.OrderBy(u => u.LastName).ToListAsync();
             List<DtoAccounts> DtoUserList = new();
@@ -311,14 +312,17 @@ namespace Servicio.Services.Account
                 userDto.Role = roles.FirstOrDefault();
 
 
-                DtoUserList.Add(userDto);
+                if (userDto.Role == RolesEnum.Tienda.ToString())
+                {
+                    DtoUserList.Add(userDto);
+                }
             }
 
             return DtoUserList;
         }
 
 
-        public async Task<DtoAccounts> FindUserWithFilters(FilterFindUser user)
+        public async Task<DtoAccounts> FindUserWithFilters(Entidades.Filtro.FilterFindUser user)
         {
             var applicationUser = await _userManager.FindByNameAsync(user.NameTienda);
             var userDto = new DtoAccounts();
@@ -346,15 +350,18 @@ namespace Servicio.Services.Account
         }
 
         //CHANGE USER STATUS
-        public async Task<Entidades.Wrappers.Response<int>> ChangeUserStatus(RegisterRequest request)
+        public async Task<Entidades.Wrappers.Response<int>> ChangeUserStatus(ChangeStatusUser request)
         {
             Entidades.Wrappers.Response<int> response = new();
             response.Succeeded = true;
-            var userget = await _userManager.FindByIdAsync(request.Id);
+
+            var userget = await _userManager.FindByIdAsync(request.IdUser);
             {
                 userget.IsActive = request.IsActive;
             }
+
             var result = await _userManager.UpdateAsync(userget);
+
             if (!result.Succeeded)
             {
                 response.Succeeded = false;

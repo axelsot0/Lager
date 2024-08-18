@@ -1,8 +1,7 @@
-
 using Datos;
-using Entidades;
-using Microsoft.AspNetCore.Identity;
+using Presentation.Extensions;
 using Servicio.Interface;
+using Servicio.IOC;
 using Servicio.Services.Service;
 
 namespace Presentation
@@ -17,7 +16,9 @@ namespace Presentation
             builder.Services.AddScoped<ISeedService, SeedService>();
             builder.Services.AddPersistenceInfrastructure(builder.Configuration);
             builder.Services.AddIdentityInfrastructureForApi(builder.Configuration);
-
+            builder.Services.AddServicesPlayer();
+            builder.Services.AddSwaggerExtension();
+            builder.Services.AddApiVersioningExtension();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -25,34 +26,35 @@ namespace Presentation
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
             using (var scope = app.Services.CreateScope())
             {
                 var seedService = scope.ServiceProvider.GetRequiredService<ISeedService>();
                 try
                 {
-                    seedService.SeedAsync();
+                    seedService.SeedAsync(scope.ServiceProvider);
                 }
                 catch (Exception ex)
                 {
-                    
+                    // Maneja la excepción según sea necesario
                 }
+
+                // Configure the HTTP request pipeline.
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
+
+
+                app.UseHttpsRedirection();
+
+                app.UseAuthentication();
+                app.UseAuthorization();
+
+                app.MapControllers();
+
+                app.Run();
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
         }
     }
 }

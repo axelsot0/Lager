@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Entidades;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Servicio.Interface;
+using Entidades.Entity;
+using Datos;
 
 namespace Servicio.Services.Service
 {
@@ -24,12 +20,12 @@ namespace Servicio.Services.Service
 
         public async Task<IEnumerable<Foto>> GetFotosById(int idProducto)
         {
-            _logger.LogInformation($"Buscando fotos por producto");
-
+            _logger.LogInformation($"Buscando fotos por Producto");
 
             var query = _context.Fotos.AsQueryable();
 
-            query = query.Where(f => f.IdProducto.Contains(idProducto));
+            query = query.Where(f => f.IdProducto == idProducto);
+
             if (query == null)
             {
                 return null;
@@ -39,19 +35,18 @@ namespace Servicio.Services.Service
 
         public async Task<Foto> AddFoto(Foto foto)
         {
-            _logger.LogInformation($"Agregando foto a producto");
+            _logger.LogInformation($"Agregando foto a Producto");
             _context.Fotos.Add(foto);
             await _context.SaveChangesAsync();
-            int id = foto.IdFoto;
             int idP = foto.IdProducto;
 
-            var ft = _context.FindAsync(id);
+            var ft = await _context.Fotos.FindAsync(foto.Id);
             if (ft == null)
             {
                 _logger.LogWarning("No se encontró la foto guardada, error a la hora de guardar");
                 return null;
             }
-            _logger.LogInformation($"Foto con id {ft.IdFoto} perteneciente a producto con id {ft.IdProducto} ha sido registrada exitosamente");
+            _logger.LogInformation($"Foto con id {ft.Id} perteneciente a Producto con id {ft.IdProducto} ha sido registrada exitosamente");
             return ft;
         }
 
@@ -67,9 +62,9 @@ namespace Servicio.Services.Service
                 return false;
             }
 
-            _context.Productos.Remove(foto);
+            _context.Fotos.Remove(foto);
             await _context.SaveChangesAsync();
-            _logger.LogInformation($"Foto con id {foto.id} borrado exitosamente.");
+            _logger.LogInformation($"Foto con id {foto.Id} borrado exitosamente.");
             return true;
         }
     }

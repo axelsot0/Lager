@@ -1,5 +1,4 @@
-﻿using Entidades;
-using Entidades.Dtos.Account;
+﻿using Entidades.Dtos.Account;
 using Entidades.Wrappers;
 
 namespace Servicio.Interface
@@ -7,11 +6,11 @@ namespace Servicio.Interface
     public interface IAccountService
     {
         Task<AuthenticationResponse> AuthenticateWebApiAsync(AuthenticationRequest request);
-        Task<Response<int>> ChangeUserStatus(RegisterRequest request);
+        Task<Response<int>> ChangeUserStatus(ChangeStatusUser request);
         Task<string> ConfirmAccountAsync(string userId, string token);
-        Task<DtoAccounts> FindUserWithFilters(FilterFindUser user);
+        Task<DtoAccounts> FindUserWithFilters(Entidades.Filtro.FilterFindUser user);
         Task<Response<int>> ForgotPassswordAsync(ForgotPasswordRequest request, string origin);
-        Task<List<DtoAccounts>> GetAllUsers();
+        Task<List<DtoAccounts>> GetAllTiendas();
         Task<DtoAccounts> GetByEmail(string Email);
         Task<DtoAccounts> GetByIdAsync(string UserId);
         Task<Response<int>> RegisterUserAsync(RegisterRequest request, string origin, string UserRoles);

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Entidades;
+using Entidades.Entity;
 namespace Datos
 {
     public class AppDbContext : DbContext
@@ -13,14 +9,12 @@ namespace Datos
         public DbSet<Producto> Productos { get; set; }
         public DbSet<Reseña> Reseñas { get; set; }
         public DbSet<Foto> Fotos { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
-        {
-        
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
+
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Compra>()
@@ -57,6 +51,14 @@ namespace Datos
                 .HasConstraintName("fk_Producto_Compra");
 
 
+            modelBuilder.Entity<Foto>().HasKey(f => f.Id);
+
+            modelBuilder.Entity<Producto>()
+                .HasMany(f => f.Fotos)
+                .WithOne(p => p.Producto)
+                .HasForeignKey(p => p.IdProducto)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_Producto_Foto");
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -2,6 +2,6 @@
 {
     public interface ISeedService
     {
-        Task SeedAsync();
+        Task SeedAsync(IServiceProvider services);
     }
 }
