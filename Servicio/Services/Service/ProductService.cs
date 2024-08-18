@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Servicio.Interface;
 using Datos;
 using Entidades.Entity;
+using Entidades.Filtro;
 
 namespace Servicio.Services.Service
 {
@@ -27,7 +28,7 @@ namespace Servicio.Services.Service
             return await _context.Productos.ToListAsync();
         }
 
-        public async Task<IEnumerable<Producto>> GetFilteredProducts(Filtro objFiltro)
+        public async Task<IEnumerable<Producto>> GetFilteredProducts(FiltroProducts objFiltro)
         {
             _logger.LogInformation("Mostrando los productos con filtros (algunos pueden ser null)");
 
@@ -92,7 +93,7 @@ namespace Servicio.Services.Service
             product.Existencias = updatedProduct.Existencias;
             product.Tipo = updatedProduct.Tipo;
             product.Modelo = updatedProduct.Modelo;
-            product.Foto = updatedProduct.Foto;
+            product.Fotos = updatedProduct.Fotos;
             product.Precio = updatedProduct.Precio;
 
             _context.Productos.Update(product);
