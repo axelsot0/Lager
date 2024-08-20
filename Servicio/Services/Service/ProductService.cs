@@ -1,17 +1,10 @@
 ﻿using Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Datos.Contexts;
-
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Servicio.Interface;
 using Datos;
 using Entidades.Entity;
-using Entidades.Filtro;
+
 
 namespace Servicio.Services.Service
 {
