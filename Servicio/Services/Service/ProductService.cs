@@ -100,10 +100,9 @@ namespace Servicio.Services.Service
 
         public async Task<bool> DeleteProduct(int id)
         {
-            _logger.LogInformation($"Vamos a borrar el producto con id{id}");
+            _logger.LogInformation($"Vamos a borrar el producto con id {id}");
 
             var product = await _context.Productos.FindAsync(id);
-
             if (product == null)
             {
                 _logger.LogWarning($"Producto con id {id} no encontrado.");
@@ -115,6 +114,7 @@ namespace Servicio.Services.Service
             _logger.LogInformation($"Producto con id {id} borrado exitosamente.");
             return true;
         }
+
 
 
     }
