@@ -1,8 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using Entidades.Entity;
 
-namespace Entidades.Entity
+namespace Entidades.Dtos.Entity
 {
-    public class Producto
+    public class ProductDTO
     {
         public int IdProducto { get; set; }
         public string NombreProducto { get; set; }
@@ -11,20 +11,8 @@ namespace Entidades.Entity
         public string Modelo { get; set; }
         public int Existencias { get; set; }
         public string Descripcion { get; set; }
-        public ICollection<Foto> Fotos { get; set; }
+        public List<Foto> Fotos { get; set; }
         public string IdUser { get; set; }
         public float Precio { get; set; }
-
-
-
-
-
-
-
-        [JsonIgnore]
-        public int? IdCompra { get; set; }
-
-        [JsonIgnore]
-        public Compra Compra { get; set; }
     }
 }

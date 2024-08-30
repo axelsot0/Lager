@@ -16,7 +16,7 @@ namespace Presentation
             builder.Services.AddScoped<ISeedService, SeedService>();
             builder.Services.AddPersistenceInfrastructure(builder.Configuration);
             builder.Services.AddIdentityInfrastructureForApi(builder.Configuration);
-            builder.Services.AddServicesPlayer();
+            builder.Services.AddServicesPlayer(builder.Configuration);
             builder.Services.AddSwaggerExtension();
             builder.Services.AddApiVersioningExtension();
             builder.Services.AddControllers();

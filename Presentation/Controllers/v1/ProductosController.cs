@@ -1,14 +1,13 @@
-﻿using Entidades.Entity;
-using Microsoft.AspNetCore.Http;
+﻿using Asp.Versioning;
+using Entidades.Dtos.Entity;
+using Entidades.Entity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using Servicio.Interface;
 
-namespace Presentation.Controllers
+namespace Presentation.Controllers.v1
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductosController : ControllerBase
+    [ApiVersion("1.0")]
+    public class ProductosController : BaseApiController
     {
 
         private readonly IProductService _productService;
@@ -33,18 +32,24 @@ namespace Presentation.Controllers
             return Ok(productos);
 
         }
+
+
         //[HttpGet]
-        //public async Task<IActionResult> GetProductsByUser(//yahiniel termina esta)
+        //public async Task<IActionResult> GetProductsByUser(string IdUser)
+        //{
+        //    _logger.LogInformation("Mostrando todos los productos del usuario");
+        //}
+
 
         [HttpPost("CrearProducto")]
-        public async Task<IActionResult> CreateProduct([FromBody] Producto newProducto)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductDTO newProducto)
         {
             _logger.LogInformation("Creando produto");
             var product = await _productService.CreateProduct(newProducto);
             return Ok(product);
         }
 
-        [HttpPut("EditarProducto/{id}")]  
+        [HttpPut("EditarProducto/{id}")]
         public async Task<IActionResult> EditProduct(int id, [FromBody] Producto updatedProduct)
         {
             if (updatedProduct == null)

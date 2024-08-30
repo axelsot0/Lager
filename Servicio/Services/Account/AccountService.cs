@@ -1,8 +1,6 @@
-﻿using Azure;
-using Entidades;
+﻿using Entidades;
 using Entidades.Dtos.Account;
-using Entidades.Email;
-using Entidades.Filtro;
+using Entidades.Dtos.Email;
 using Entidades.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -148,7 +146,7 @@ namespace Servicio.Services.Account
                 await _emailService.SendAsync(new EmailRequest()
                 {
                     To = user.Email,
-                    Body = $"{verificationURI}",
+                    Body = $"<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <style>\r\n        body {{\r\n            font-family: Arial, sans-serif;\r\n            background-color: #f4f4f4;\r\n            margin: 0;\r\n            padding: 0;\r\n            color: #333;\r\n        }}\r\n        .container {{\r\n            width: 100%;\r\n            max-width: 600px;\r\n            margin: 0 auto;\r\n            background-color: #ffffff;\r\n            border-radius: 10px;\r\n            overflow: hidden;\r\n            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n        }}\r\n        .header {{\r\n            background-color: #007BFF;\r\n            color: #ffffff;\r\n            padding: 20px;\r\n            text-align: center;\r\n        }}\r\n        .header h1 {{\r\n            margin: 0;\r\n            font-size: 24px;\r\n        }}\r\n        .body {{\r\n            padding: 20px;\r\n        }}\r\n        .body p {{\r\n            font-size: 16px;\r\n            line-height: 1.5;\r\n        }}\r\n        .cta-button {{\r\n            display: block;\r\n            width: 200px;\r\n            margin: 20px auto;\r\n            padding: 15px;\r\n            background-color: #007BFF;\r\n            color: #ffffff;\r\n            text-align: center;\r\n            text-decoration: none;\r\n            border-radius: 5px;\r\n            font-size: 16px;\r\n        }}\r\n        .cta-button:hover {{\r\n            background-color: #0056b3;\r\n        }}\r\n        .footer {{\r\n            background-color: #f4f4f4;\r\n            padding: 10px;\r\n            text-align: center;\r\n            font-size: 12px;\r\n            color: #777;\r\n        }}\r\n    </style>\r\n</head>\r\n<body>\r\n    <div class=\"container\">\r\n        <div class=\"header\">\r\n            <h1>Confirm Your Registration</h1>\r\n        </div>\r\n        <div class=\"body\">\r\n            <p>Hello,</p>\r\n            <p>Thank you for registering with us. To complete your registration, please click the button below to verify your email address:</p>\r\n            <a href=\"{verificationURI}\" class=\"cta-button\">Confirm Registration</a>\r\n            <p>If you did not register for this account, please disregard this email.</p>\r\n        </div>\r\n        <div class=\"footer\">\r\n            <p>&copy; 2024 Axel & Yahinniel. All rights reserved.</p>\r\n        </div>\r\n    </div>\r\n</body>\r\n</html>",
                     Subject = "Confirm registration"
                 });
             }

@@ -43,9 +43,9 @@ namespace Datos
                 .HasKey(r => r.IdReseña);
 
 
-            modelBuilder.Entity<Producto>()
-                .HasOne(c => c.Compra)
-                .WithMany(p => p.Productos)
+            modelBuilder.Entity<Compra>()
+                .HasMany(p => p.Productos)
+                .WithOne(c => c.Compra)
                 .HasForeignKey(c => c.IdCompra)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_Producto_Compra");

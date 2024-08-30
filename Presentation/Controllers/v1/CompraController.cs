@@ -1,13 +1,13 @@
-﻿using Entidades;
+﻿using Asp.Versioning;
+using Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Servicio.Interface;
 
-namespace Presentation.Controllers
+namespace Presentation.Controllers.v1
 {
-    [Route("[controller]")]
-    [ApiController]
-    public class ComprasController : ControllerBase
+    [ApiVersion("1.0")]
+    public class ComprasController : BaseApiController
     {
         private readonly ICompraService _compraService;
         private readonly ILogger<ComprasController> _logger;
@@ -18,7 +18,7 @@ namespace Presentation.Controllers
             _logger = logger;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Compra>>> GetAllCompras()
         {
@@ -34,7 +34,7 @@ namespace Presentation.Controllers
             }
         }
 
-        
+
         [HttpGet("{idUser}")]
         public async Task<ActionResult<IEnumerable<Compra>>> GetComprasByUser(int idUser)
         {
@@ -54,7 +54,7 @@ namespace Presentation.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public async Task<ActionResult<Compra>> CreateCompra([FromBody] Compra newCompra)
         {
@@ -75,7 +75,7 @@ namespace Presentation.Controllers
             }
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompra(int id)
         {

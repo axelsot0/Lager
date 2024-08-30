@@ -30,7 +30,6 @@ namespace Presentation.Controllers
         }
 
 
-        [Authorize(Roles = "SuperAdmin")]
         [HttpPost("user-register")]
         [SwaggerOperation(
             Summary = "User Creation",

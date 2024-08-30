@@ -1,4 +1,4 @@
-﻿using Entidades.Email;
+﻿using Entidades.Dtos.Email;
 using Entidades.Settings;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;

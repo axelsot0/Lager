@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class ReseñaController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class BaseApiController : ControllerBase
     {
-
     }
 }

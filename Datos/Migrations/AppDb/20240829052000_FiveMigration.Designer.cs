@@ -4,6 +4,7 @@ using Datos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Datos.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240829052000_FiveMigration")]
+    partial class FiveMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,11 +147,10 @@ namespace Datos.Migrations.AppDb
                     b.Property<int>("Existencias")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdCompra")
+                    b.Property<int>("IdCompra")
                         .HasColumnType("int");
 
                     b.Property<string>("IdUser")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Marca")
@@ -240,6 +242,7 @@ namespace Datos.Migrations.AppDb
                         .WithMany("Productos")
                         .HasForeignKey("IdCompra")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_Producto_Compra");
 
                     b.Navigation("Compra");
