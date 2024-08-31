@@ -1,4 +1,5 @@
 ﻿using Entidades.Entity;
+using Microsoft.AspNetCore.Http;
 
 namespace Entidades.Dtos.Entity
 {
@@ -11,7 +12,7 @@ namespace Entidades.Dtos.Entity
         public string Modelo { get; set; }
         public int Existencias { get; set; }
         public string Descripcion { get; set; }
-        public List<Foto> Fotos { get; set; }
+        public List<IFormFile> Fotos { get; set; }
         public string IdUser { get; set; }
         public float Precio { get; set; }
     }

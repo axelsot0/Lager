@@ -6,6 +6,7 @@ using Datos;
 using Entidades.Entity;
 using Entidades.Dtos.Entity;
 using AutoMapper;
+using Servicio.Helpers;
 
 
 namespace Servicio.Services.Service
@@ -14,18 +15,99 @@ namespace Servicio.Services.Service
     {
         private readonly AppDbContext _context;
         private readonly ILogger<ProductService> _logger;
+        private readonly ILogger<FotoService> _fotoService;
         private readonly IMapper _mapper;
-        public ProductService(AppDbContext context, ILogger<ProductService> logger, IMapper mapper)
+        public ProductService(AppDbContext context, ILogger<ProductService> logger, IMapper mapper, ILogger<FotoService> fotoService)
         {
             _mapper = mapper;
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _fotoService = fotoService;
         }
+
+        public async Task<Producto> CreateProduct(ProductDTO product)
+        {
+            _logger.LogInformation($"Vamos a crear un nuevo producto: {product.NombreProducto}");
+
+            Producto newProduct = _mapper.Map<Producto>(product);
+            
+            _context.Productos.Add(newProduct);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Producto creado exitosamente con id {newProduct.IdProducto}");
+
+            foreach (var foto in product.Fotos)
+            {
+                Foto addFoto = new Foto
+                {
+                    IdProducto = newProduct.IdProducto,
+                    Ruta = UploadImage.UploadFile(foto, newProduct.IdProducto),
+                    nombreArchivo = $"Imagen de {product.NombreProducto}" 
+                };
+
+                _context.Fotos.Add(addFoto);
+            }
+
+            return newProduct;
+        }
+
+        public async Task<bool> EditProduct(int id, ProductDTO updatedProduct)
+        {
+            _logger.LogInformation($"Vamos a editar el producto con id {id}");
+
+            var product = await _context.Productos
+                        .Include(p => p.Fotos) 
+                        .FirstOrDefaultAsync(p => p.IdProducto == id);
+
+            if (product == null)
+            {
+                _logger.LogWarning($"Producto con id {id} no encontrado.");
+                return false;
+            }
+
+            product = _mapper.Map<Producto>(updatedProduct);
+
+            if (updatedProduct.Fotos != null && updatedProduct.Fotos.Count > 0)
+            {
+                _context.Fotos.RemoveRange(product.Fotos);
+
+                foreach (var foto in updatedProduct.Fotos)
+                {
+                    Foto newFoto = new Foto
+                    {
+                        IdProducto = product.IdProducto,
+                        Ruta = UploadImage.UploadFile(foto, product.IdProducto),
+                        nombreArchivo = $"Imagen de {updatedProduct.NombreProducto}"
+                    };
+
+                    _context.Fotos.Add(newFoto);
+                }
+            }
+
+            _context.Productos.Update(product);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Producto con id {id} editado exitosamente.");
+            return true;
+        }
+
 
         public async Task<IEnumerable<Producto>> GetAllProducts()
         {
-            return await _context.Productos.ToListAsync();
+            return await _context.Productos
+                     .Include(p => p.Fotos)
+                     .ToListAsync();
         }
+
+
+        public async Task<IEnumerable<Producto>> GetAllProductsTienda(string id)
+        {
+            return await _context.Productos
+                     .Include(p => p.Fotos)
+                     .Where(p => p.IdUser == id)
+                     .ToListAsync();
+        }
+
 
         public async Task<IEnumerable<Producto>> GetFilteredProducts(FiltroProducts objFiltro)
         {
@@ -64,47 +146,6 @@ namespace Servicio.Services.Service
             return await query.ToListAsync();
         }
 
-        public async Task<Producto> CreateProduct(ProductDTO product)
-        {
-            _logger.LogInformation($"Vamos a crear un nuevo producto: {product.NombreProducto}");
-
-            Producto newProduct = _mapper.Map<Producto>(product);
-            
-            _context.Productos.Add(newProduct);
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation($"Producto creado exitosamente con id {newProduct.IdProducto}");
-            return newProduct;
-        }
-
-        public async Task<bool> EditProduct(int id, Producto updatedProduct)
-        {
-            _logger.LogInformation($"Vamos a editar el producto con id {id}");
-
-            var product = await _context.Productos.FindAsync(id);
-
-            if (product == null)
-            {
-                _logger.LogWarning($"Producto con id {id} no encontrado.");
-                return false;
-            }
-
-            product.NombreProducto = updatedProduct.NombreProducto;
-            product.Descripcion = updatedProduct.Descripcion;
-            product.Precio = updatedProduct.Precio;
-            product.Existencias = updatedProduct.Existencias;
-            product.Tipo = updatedProduct.Tipo;
-            product.Modelo = updatedProduct.Modelo;
-            product.Precio = updatedProduct.Precio;
-
-            product.Fotos = updatedProduct.Fotos;
-
-            _context.Productos.Update(product);
-            await _context.SaveChangesAsync();
-
-            _logger.LogInformation($"Producto con id {id} editado exitosamente.");
-            return true;
-        }
 
 
 
@@ -112,21 +153,27 @@ namespace Servicio.Services.Service
         {
             _logger.LogInformation($"Vamos a borrar el producto con id {id}");
 
-            var product = await _context.Productos.FindAsync(id);
+            var product = await _context.Productos
+                                        .Include(p => p.Fotos)
+                                        .FirstOrDefaultAsync(p => p.IdProducto == id);
+
             if (product == null)
             {
                 _logger.LogWarning($"Producto con id {id} no encontrado.");
                 return false;
             }
 
+
+            _context.Fotos.RemoveRange(product.Fotos);
+
+           UploadImage.DeleteFile(product.IdProducto);
+
             _context.Productos.Remove(product);
             await _context.SaveChangesAsync();
+
             _logger.LogInformation($"Producto con id {id} borrado exitosamente.");
             return true;
         }
-
-
-
     }
 
 }

@@ -19,6 +19,8 @@ namespace Presentation.Controllers.v1
             _logger = logger;
         }
 
+
+
         [HttpGet]
         public async Task<IActionResult> GetProductos()
         {
@@ -49,6 +51,8 @@ namespace Presentation.Controllers.v1
             return Ok(product);
         }
 
+
+
         [HttpPut("EditarProducto/{id}")]
         public async Task<IActionResult> EditProduct(int id, [FromBody] Producto updatedProduct)
         {
@@ -67,6 +71,10 @@ namespace Presentation.Controllers.v1
                 return NotFound($"Product with id {id} not found.");
             }
         }
+
+
+
+
         [HttpDelete("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
